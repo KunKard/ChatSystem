@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>LogicCheck</RootNamespace>
+    <!-- 与 Unity 2022.3 保持一致：C# 9，不使用可空引用类型标注 -->
+    <LangVersion>9.0</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- 桩代码里有意保留未使用的参数，不要因此产生噪音 -->
+    <NoWarn>CS0169;CS0649;CS0067</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="UnityShim.cs" />
+    <Compile Include="Program.cs" />
+    <!-- 直接编译工程里的真实源码，而不是拷贝一份，避免验的东西和跑的东西不一致 -->
+    <Compile Include="../Assets/Scripts/Data/**/*.cs" />
+    <Compile Include="../Assets/Scripts/Runtime/**/*.cs" />
+  </ItemGroup>
+
+</Project>

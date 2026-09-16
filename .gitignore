@@ -1,0 +1,57 @@
+# ============================================================
+#  Unity 工程 .gitignore
+#  原则：能被 Unity 重新生成的，一律不入库
+# ============================================================
+
+# ---- Unity 生成目录 ----
+# Library 实测 2 GB，是导入缓存，删掉重开工程会自动重建
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/[Uu]ser[Ss]ettings/
+/[Aa]ssets/[Aa]ssetStoreTools*
+/[Aa]ssets/[Pp]lugins/[Ee]ditor/JetBrains*
+
+# ---- Logs：只忽略 Unity 的日志，保留 Docs/ 设计文档 ----
+/Logs/*.log
+/Logs/*.txt
+sysinfo.txt
+crashlytics-build.properties
+*.stackdump
+
+# ---- IDE 生成的项目文件（Unity 会按 asmdef 重新生成）----
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# ---- 但 .logiccheck 是手写的验证工程，源码要入库 ----
+!/.logiccheck/.logiccheck.csproj
+/.logiccheck/bin/
+/.logiccheck/obj/
+
+# ---- 系统文件 ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================================
+#  字体授权：Genshin.ttf 是米哈游专有字体（客户端提取物）。
+#  本工程为公开仓库，故不随源码分发，需自行放置后重新生成 SDF。
+#  详见 Logs/Docs/Design.md 附录 A.3
+# ============================================================
+/Assets/TextMesh Pro/Fonts/Genshin.ttf
+/Assets/TextMesh Pro/Fonts/Genshin.ttf.meta
