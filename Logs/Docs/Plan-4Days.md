@@ -28,15 +28,15 @@
 
 | # | 任务 | 预估 | 说明 |
 |---|---|---|---|
-| 1.1 | ✅ ~~接入中文字体~~ | ~~2h~~ | **已完成**（2026-09-16）。`Genshin SDF` 已接入并设为默认字体 + fallback。剩 1 步编辑器操作见下 |
+| 1.1 | ✅ ~~接入中文字体~~ | ~~2h~~ | **已完成**（2026-09-16，收尾于 2026-09-19）。`Genshin SDF` 已接入并设为默认字体 + fallback，图集已切 `Dynamic` |
 | 1.2 | ✅ 定义数据模型 | ~~1.5h~~ | **已完成**。`Assets/Scripts/Data/Model/` 下 5 个文件 |
 | 1.3 | ✅ 定义 ScriptableObject | ~~1h~~ | **已完成**。`ContactProfile` / `ConversationAsset` / `IAvatarProvider`。`Lookup` 改为私有缓存 + 访问器 |
 | 1.4 | ✅ 实现 `DialogueRunner` | ~~2h~~ | **已完成**。含时间分割线判定、输入状态广播、存档恢复入口 |
 | 1.4b | ✅ 建立 asmdef 分层 | ~~0.5h~~ | **计划外新增**。`ChatSystem.Data` / `ChatSystem.Runtime` / `ChatSystem.Tests` |
 | 1.4c | ✅ 状态机单元测试 | ~~1.5h~~ | **计划外新增**（原排在 Day 4）。**37 个用例**（状态机 30 + 分割线规则 7），含边界与存档恢复 |
-| 1.5 | 🔴 **改造场景布局** | 2h | **分步清单已出：`Logs/Docs/T7-场景布局改造.md`**。实测发现两个 `Viewport` 是零尺寸（`Mask` 裁到 0×0，消息一条都显示不出来），必须先修 |
-| 1.6 | 气泡宽度自适应 | 2h | 见下方「关键决策」，这是最容易返工的地方。**两个气泡预制体内部要重组**，不是加组件能解决的 —— 步骤见 T7 文档步骤 5 |
-| 1.7 | 造测试数据 | 0.5h | 一个 SO 里配 5 条消息：短文本 / 长中文 / Emoji 混排 / 表情包 / 时间分割线；**其中 2 条配时间、1 条留空**（验证"未配置则不显示"） |
+| 1.5 | ✅ **改造场景布局** | ~~2h~~ | **已完成**（2026-09-19）。分步清单见 `Logs/Docs/T7-场景布局改造.md`（v2）。⚠️ 遗留：两个 `Viewport` 磁盘上仍是 `(0,0)/(0,0)`，实测渲染正常故未强改；备用修法见 `Assets/Editor/ViewportAnchorFixer.cs` |
+| 1.6 | ✅ 气泡宽度自适应 | ~~2h~~ | **已完成**（2026-09-19）。新增 `Assets/Scripts/View/ClampPreferredWidth.cs` + `ChatSystem.View` asmdef；两个气泡预制体的布局组已重组 |
+| 1.7 | 🔶 造测试数据 | 0.5h | **生成器已就绪待运行**：`Assets/Editor/Day1TestDataGenerator.cs`，菜单 `Tools/ChatSystem/生成 Day1 测试数据`。产出 5 条消息（2 条配时间、3 条留空）。**Day 2 接 View 层前必须跑一次** |
 
 > **1.4b 的收益**：给 `ChatSystem.Runtime` 建 asmdef 且**不引用 `UnityEngine.UI`**，
 > 于是"运行时层禁止使用 UGUI"这条架构约束从"靠自觉"变成**编译期强制** —— 写了就编不过。
@@ -53,15 +53,16 @@
 2. ✅ `TMP Settings.m_defaultFontAsset` 指向 `Genshin SDF`
 3. ✅ `TMP Settings.m_fallbackFontAssets` 挂上 `LiberationSans SDF`（拉丁字符走原字体，排版更精细）
 
-**🔴 剩余唯一一步（需在 Unity 编辑器内操作，约 30 秒）**：
+**✅ 图集已切 Dynamic（2026-09-19 验证通过）**：
 
-`Genshin SDF.asset` 目前是**静态图集**（`m_AtlasPopulationMode: 0`，只烘焙了 3609 个字形），
-实测 `伽 （ ） 「 」 『 』 — · !` 等字符不在图集内，**仍会显示方块**。
+原先 `Genshin SDF.asset` 是静态图集（`m_AtlasPopulationMode: 0`，只烘焙 3609 个字形），
+`伽 （ ） 「 」 『 』 — · !` 等字符不在图集内会显示方块。现已在编辑器内完成：
 
-1. 选中 `Assets/TextMesh Pro/Fonts/Genshin SDF.asset`
-2. Inspector 顶部 `Atlas Population Mode`：**Static → Dynamic**
-3. 勾选 `Is Multi Atlas Texture Enabled`
-4. `Apply`（`Clear Dynamic Data on Build` 保持**不勾**）
+1. ✅ `Atlas Population Mode`：**Static → Dynamic**（实测 `m_AtlasPopulationMode: 1`）
+2. ✅ 勾选 `Is Multi Atlas Texture Enabled`（实测 `1`）
+3. ✅ `Clear Dynamic Data on Build` 保持**不勾**（实测 `0`）
+
+缺字形会在运行时按需补进图集，因此测试数据里可以放心使用 `「」` 等标点。
 
 > **勘误**：原文第 4 步"追加中文换行规则"**作废，且映射方向是反的**。TMP 自带的
 > `LineBreaking Leading/Following Characters.txt` 已完整覆盖中日文禁则，无需追加任何字符；
