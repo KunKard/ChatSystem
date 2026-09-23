@@ -1,0 +1,161 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef3a841018da394f85eb41fd13b1762, type: 3}
+  m_Name: Conv_Robin
+  m_EditorClassIdentifier: 
+  contact: {fileID: 11400000, guid: ee027383263405245803a010744a8188, type: 2}
+  entryNodeId: n1
+  nodes:
+  - id: n1
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u5728\u5417\uFF1F"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: n2
+    timeLabel: "\u6628\u5929 21:30"
+    timeValueUtc: 1789565400
+  - id: n2
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u4E0B\u5468\u7684\u6F14\u51FA\u66F2\u76EE\u6211\u6539\u4E86\u4E09\u904D\uFF0C\u6700\u540E\u51B3\u5B9A\u8FD8\u662F\u7528\u6700\u5F00\u59CB\u90A3\u4E00\u7248\u3002\u6709\u65F6\u5019\u7B2C\u4E00\u76F4\u89C9\u5C31\u662F\u5BF9\u7684\uFF0C\u6539\u6765\u6539\u53BB\u53CD\u800C\u628A\u6700\u6253\u52A8\u4EBA\u7684\u90A3\u90E8\u5206\u78E8\u6389\u4E86\u3002\u4F60\u8981\u662F\u90A3\u5929\u6709\u7A7A\u7684\u8BDD\u5C31\u8FC7\u6765\u5427\uFF0C\u6211\u7ED9\u4F60\u7559\u4E86\u7B2C\u4E09\u6392\u9760\u4E2D\u95F4\u7684\u4F4D\u7F6E\uFF0C\u90A3\u4E2A\u89D2\u5EA6\u80FD\u770B\u6E05\u6574\u4E2A\u821E\u53F0\u7684\u706F\u5149\u53D8\u5316\uFF0C\u4E5F\u80FD\u542C\u6E05\u8FD4\u573A\u90A3\u9996\u7684\u6362\u6C14\u58F0\u3002\u5BF9\u4E86\uFF0C\u6563\u573A\u4E4B\u540E\u522B\u6025\u7740\u8D70\uFF0C\u540E\u53F0\u7684\u95E8\u7981\u6211\u8BA9\u5DE5\u4F5C\u4EBA\u5458\u7ED9\u4F60\u7559\u7740\uFF0C\u6211\u4EEC\u53EF\u4EE5\u5728\u4F11\u606F\u5BA4\u5750\u4E00\u4F1A\u513F\uFF0C\u987A\u4FBF\u628A\u4E0A\u6B21\u6CA1\u8BF4\u5B8C\u7684\u90A3\u4EF6\u4E8B\u804A\u5B8C\u3002\u522B\u518D\u8BF4\u4EC0\u4E48\u300C\u6211\u53EA\u662F\u8DEF\u8FC7\u300D\u4E86\uFF0C\u7968\u90FD\u7ED9\u4F60\u7559\u4E86\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: n3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: n3
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u660E\u5929\u89C1\U0001F60A \u8BB0\u5F97\u628A\u7968\u5E26\u4E0A\U0001F60E"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: n4
+    timeLabel: 
+    timeValueUtc: 0
+  - id: n4
+    kind: 0
+    message:
+      kind: 1
+      senderId: robin
+      text: 
+      assetName: sticker_robin_01
+    options: []
+    delaySeconds: 0.8
+    nextId: n5
+    timeLabel: "\u4ECA\u5929 09:20"
+    timeValueUtc: 1789608000
+  - id: n5
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u6240\u4EE5\uFF0C\u90A3\u5929\u4F60\u4F1A\u6765\u5417\uFF1F"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: n6
+    timeLabel: 
+    timeValueUtc: 0
+  - id: n6
+    kind: 1
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options:
+    - text: "\u6211\u90A3\u5929\u6709\u7A7A\uFF0C\u7968\u7ED9\u6211\u7559\u7740"
+      nextId: a1
+      timeLabel: 
+      timeValueUtc: 0
+    - text: "\u5C3D\u91CF\u5427\uFF0C\u6700\u8FD1\u6709\u70B9\u5FD9"
+      nextId: b1
+      timeLabel: 
+      timeValueUtc: 0
+    - text: "\u2026\u2026\u6211\u8003\u8651\u4E00\u4E0B"
+      nextId: c1
+      timeLabel: 
+      timeValueUtc: 0
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0
+  - id: a1
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u90A3\u5C31\u8BF4\u5B9A\u4E86\u3002\u7B2C\u4E09\u6392\uFF0C\u4E2D\u95F4\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: a2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: a2
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u6563\u573A\u522B\u6025\u7740\u8D70\U0001F60E"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: end
+    timeLabel: 
+    timeValueUtc: 0
+  - id: b1
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u5FD9\u4E5F\u8981\u5403\u996D\u3002\u6211\u7ED9\u4F60\u7559\u5230\u5F00\u573A\u524D\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: end
+    timeLabel: 
+    timeValueUtc: 0
+  - id: c1
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u597D\uFF0C\u6211\u7B49\u4F60\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 2
+    nextId: end
+    timeLabel: 
+    timeValueUtc: 0
+  - id: end
+    kind: 3
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options: []
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0

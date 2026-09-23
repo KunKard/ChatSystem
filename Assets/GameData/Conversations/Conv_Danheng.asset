@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef3a841018da394f85eb41fd13b1762, type: 3}
+  m_Name: Conv_Danheng
+  m_EditorClassIdentifier: 
+  contact: {fileID: 11400000, guid: 17e52f9edefffa34c95c9dfe4c02c724, type: 2}
+  entryNodeId: d1
+  nodes:
+  - id: d1
+    kind: 0
+    message:
+      kind: 0
+      senderId: danheng
+      text: "\u8D44\u6599\u653E\u5728\u684C\u4E0A\u4E86\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: d2
+    timeLabel: "\u4ECA\u5929 08:15"
+    timeValueUtc: 1789604100
+  - id: d2
+    kind: 0
+    message:
+      kind: 0
+      senderId: danheng
+      text: "\u8BB0\u5F97\u770B\u7B2C\u4E09\u9875\u7684\u6279\u6CE8\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: d3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: d3
+    kind: 1
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options:
+    - text: "\u2026\u2026\u597D\uFF0C\u6211\u770B\u5B8C\u518D\u8BF4"
+      nextId: da1
+      timeLabel: 
+      timeValueUtc: 0
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0
+  - id: da1
+    kind: 0
+    message:
+      kind: 0
+      senderId: danheng
+      text: "\u55EF\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 1.6
+    nextId: dend
+    timeLabel: 
+    timeValueUtc: 0
+  - id: dend
+    kind: 3
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options: []
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0

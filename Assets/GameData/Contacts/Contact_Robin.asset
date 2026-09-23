@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cce130b3fb8156d48bb5dde58d65ae21, type: 3}
+  m_Name: Contact_Robin
+  m_EditorClassIdentifier: 
+  id: robin
+  displayName: "\u77E5\u66F4\u9E1F"
+  signature: "\u6B63\u5728\u7B79\u5907\u4E0B\u4E00\u573A\u6F14\u51FA"
+  avatar: {fileID: 0}
+  defaultPreview: "\u4F60\u7EC8\u4E8E\u56DE\u6211\u6D88\u606F\u4E86"

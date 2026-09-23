@@ -210,6 +210,60 @@ namespace ChatSystem.Tests
         }
 
         [Test]
+        public void 延迟_长消息等得比配置值更久()
+        {
+            // 100 字折算到上限 4 秒，配置的 0.5 秒只是下限，不足以发出
+            var asset = MakeAsset("robin",
+                Msg("n1", new string('字', 100), next: "n2", delay: 0.5f),
+                End("n2"));
+
+            var runner = Run(asset, out var rec);
+            runner.Start("n1");
+
+            runner.Tick(0.5f);
+            Assert.AreEqual(0, rec.Messages.Count, "走完配置的 0.5 秒还不够，字数算出的等待更长");
+
+            runner.Tick(3.5f);
+            Assert.AreEqual(1, rec.Messages.Count, "累计 4 秒后应发出");
+        }
+
+        [Test]
+        public void 延迟_短消息到点即发_不被字数拖长()
+        {
+            var asset = MakeAsset("robin",
+                Msg("n1", "嗯", next: "n2", delay: 2f),
+                End("n2"));
+
+            var runner = Run(asset, out var rec);
+            runner.Start("n1");
+
+            // 用 1.5 + 0.5 而不是 1.9 + 0.1：后者在 float 里减不干净
+            //（2 - 1.9 = 0.100000024），会残留一个正数让 Tick 提前返回
+            runner.Tick(1.5f);
+            Assert.AreEqual(0, rec.Messages.Count);
+
+            runner.Tick(0.5f);
+            Assert.AreEqual(1, rec.Messages.Count, "字数时长低于配置值，起决定作用的仍是配置值");
+        }
+
+        [Test]
+        public void 延迟_Wait节点不受字数折算影响()
+        {
+            // Wait 不发声，没有"字数"可言；这里就是确切的等待时长
+            var asset = MakeAsset("robin",
+                Wait("w1", 1f, "n1"),
+                Msg("n1", new string('字', 200), next: "n2"),
+                End("n2"));
+
+            var runner = Run(asset, out var rec);
+            runner.Start("w1");
+
+            Assert.AreEqual(0, rec.Messages.Count);
+            runner.Tick(1f);
+            Assert.AreEqual(1, rec.Messages.Count, "Wait 走完后进入的是无延迟节点，应立即发出");
+        }
+
+        [Test]
         public void 玩家消息不触发正在输入()
         {
             var asset = MakeAsset("robin",
@@ -575,7 +629,7 @@ namespace ChatSystem.Tests
         }
 
         [Test]
-        public void 会话预览_输入中优先显示正在输入()
+        public void 会话预览_输入中不被正在输入覆盖()
         {
             var asset = MakeAsset("robin",
                 Msg("n1", "A", next: "n2", delay: 1f),
@@ -585,11 +639,12 @@ namespace ChatSystem.Tests
             var session = new ChatSession(asset) { IsActive = true };
             session.Runner.Start("n1");
 
-            Assert.AreEqual(ChatSession.TypingText, session.PreviewText,
-                "非激活会话也要显示这条，复用同一份状态（§5.2.5 ③）");
+            Assert.IsTrue(session.IsTyping, "打字状态本身仍在，供消息区那个三点气泡使用");
+            Assert.AreEqual("默认预览", session.PreviewText,
+                "预览不再替换为\"对方正在输入…\"——打字只由三点气泡表达（§5.2.5 ③ 的有意偏离）");
 
             session.Tick(1f);
-            Assert.AreEqual("B", session.PreviewText, "输入结束后回落到最后一条消息");
+            Assert.AreEqual("B", session.PreviewText, "输入结束后显示最后一条消息");
         }
 
         [Test]

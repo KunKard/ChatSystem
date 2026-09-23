@@ -438,6 +438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 890970595443314753}
   - component: {fileID: 2134687753821140887}
+  - component: {fileID: 6262094839730453431}
   m_Layer: 5
   m_Name: MyChatBubble
   m_TagString: Untagged
@@ -492,6 +493,25 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &6262094839730453431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7676258797911018181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf613d722bfa454285d3a0afb0a4e4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarImage: {fileID: 7428089333927238894}
+  nameText: {fileID: 6069074349555777093}
+  bodyRoot: {fileID: 1706188814027345647}
+  bodyText: {fileID: 700494923323808061}
+  stickerRoot: {fileID: 8276162507988181221}
+  stickerImage: {fileID: 829653122302694494}
+  isPlayerSide: 1
 --- !u!1 &8194754175676842879
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,6 +657,7 @@ GameObject:
   - component: {fileID: 8412086934179230756}
   - component: {fileID: 9161456288994200957}
   - component: {fileID: 829653122302694494}
+  - component: {fileID: 1866853483476931346}
   m_Layer: 5
   m_Name: Sticker
   m_TagString: Untagged
@@ -701,3 +722,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1866853483476931346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8276162507988181221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: 200
+  m_MinHeight: 200
+  m_PreferredWidth: 200
+  m_PreferredHeight: 200
+  m_FlexibleWidth: 0
+  m_FlexibleHeight: 0
+  m_LayoutPriority: 1

@@ -219,7 +219,11 @@ namespace ChatSystem.Runtime
                     if (node.delaySeconds > 0f)
                     {
                         _delayedNode = node;
-                        _remainingDelay = node.delaySeconds;
+
+                        // 实际等待时长随字数走：长消息"打字"得更久，短消息不会一点就出来。
+                        // delaySeconds 是下限而非最终值，见 TypingDurationPolicy
+                        _remainingDelay = TypingDurationPolicy.EffectiveDelay(node.delaySeconds, node.message?.text);
+
                         SetTyping(IsNpcMessage(node));
                     }
                     else

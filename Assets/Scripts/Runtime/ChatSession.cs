@@ -18,9 +18,6 @@ namespace ChatSystem.Runtime
     /// </remarks>
     public class ChatSession
     {
-        /// <summary>对方输入期间，联系人列表预览与顶部签名显示的临时文案。</summary>
-        public const string TypingText = "对方正在输入…";
-
         /// <summary>表情包/图片消息在预览里的占位文案。</summary>
         private const string MediaPlaceholder = "[表情]";
 
@@ -69,15 +66,21 @@ namespace ChatSystem.Runtime
 
         /// <summary>联系人列表里显示的会话预览文案。</summary>
         /// <remarks>
-        /// 优先级：对方正在输入 &gt; 最后一条消息 &gt; 联系人配置的默认预览。
-        /// 非激活会话也会走这条逻辑，因此后台输入时列表项同样会显示"对方正在输入…"（§5.2.5 ③）。
+        /// 优先级：最后一条消息 &gt; 联系人配置的默认预览。
+        /// <para>
+        /// <b>输入期间不再替换为"对方正在输入…"</b>（原设计文档 §5.2.5 ③ 的要求，此处有意偏离）。
+        /// 理由：整个界面里表示"对方正在输入"的只留消息区底部那个三点气泡。让预览也跟着变，
+        /// 等于在两个位置重复同一件事；而且列表是横向扫读的，一格文案忽明忽暗反而干扰
+        /// 辨认"哪个会话有了新消息"——那才是列表预览本来的职责。
+        /// </para>
+        /// <para>
+        /// 打字状态本身没有丢，仍在 <see cref="IsTyping"/> 上，供消息区那个气泡使用。
+        /// </para>
         /// </remarks>
         public string PreviewText
         {
             get
             {
-                if (IsTyping) return TypingText;
-
                 for (int i = Messages.Count - 1; i >= 0; i--)
                 {
                     var msg = Messages[i];

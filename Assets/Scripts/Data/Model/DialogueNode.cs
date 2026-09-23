@@ -29,6 +29,19 @@ namespace ChatSystem.Data.Model
         public List<ChoiceOption> options = new List<ChoiceOption>();
 
         /// <summary>发送延迟 / 等待时长（秒）。</summary>
+        /// <remarks>
+        /// <see cref="NodeKind.Message"/> 节点上它是<b>下限而非最终值</b>：运行时还会按消息字数
+        /// 折算一个时长（<c>ChatSystem.Runtime.TypingDurationPolicy</c>），两者取较大者。
+        /// 因此这里填 2 秒只保证"至少 2 秒"，长文案会等得更久。
+        /// <para>
+        /// 填 0 表示立即发出、且不显示"正在输入"。这个开关语义不受字数折算影响，
+        /// 0 就是 0。
+        /// </para>
+        /// <para>
+        /// <see cref="NodeKind.Wait"/> 节点上它<b>就是</b>确切的等待时长，不参与字数折算 ——
+        /// Wait 不发声，"对方正在打字"无从谈起。
+        /// </para>
+        /// </remarks>
         public float delaySeconds;
 
         /// <summary>线性后继节点 ID。<see cref="NodeKind.Choice"/> 节点为 null，走各选项自己的 nextId。</summary>

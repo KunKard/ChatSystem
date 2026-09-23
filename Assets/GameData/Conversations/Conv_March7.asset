@@ -1,0 +1,121 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef3a841018da394f85eb41fd13b1762, type: 3}
+  m_Name: Conv_March7
+  m_EditorClassIdentifier: 
+  contact: {fileID: 11400000, guid: 71f362620caa6b44cbd7dd787edec9ed, type: 2}
+  entryNodeId: m1
+  nodes:
+  - id: m1
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u5582\uFF01\u4F60\u5728\u5E72\u561B\u5462"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: m2
+    timeLabel: "\u4ECA\u5929 14:02"
+    timeValueUtc: 1789624920
+  - id: m2
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u6211\u5728\u6574\u7406\u4E0A\u6B21\u62CD\u7684\u7167\u7247\uFF0C\u597D\u51E0\u5F20\u62CD\u7CCA\u4E86"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: m3
+    timeLabel: "\u4ECA\u5929 14:03"
+    timeValueUtc: 1789624980
+  - id: m3
+    kind: 1
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options:
+    - text: "\u53D1\u6211\u770B\u770B"
+      nextId: ma1
+      timeLabel: 
+      timeValueUtc: 0
+    - text: "\u4F60\u62CD\u7684\u6211\u80AF\u5B9A\u4E0D\u770B"
+      nextId: mb1
+      timeLabel: 
+      timeValueUtc: 0
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0
+  - id: ma1
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u597D\u561E\uFF0C\u7B49\u6211\u6311\u4E00\u4E0B"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: ma2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: ma2
+    kind: 0
+    message:
+      kind: 1
+      senderId: march7
+      text: 
+      assetName: sticker_march7_01
+    options: []
+    delaySeconds: 0.8
+    nextId: mend
+    timeLabel: 
+    timeValueUtc: 0
+  - id: mb1
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u5582\uFF01\uFF01\u751F\u6C14\u4E86"
+      assetName: 
+    options: []
+    delaySeconds: 0.4
+    nextId: mb2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: mb2
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u2026\u2026\u8FD8\u662F\u53D1\u4F60\u5427"
+      assetName: 
+    options: []
+    delaySeconds: 1.4
+    nextId: mend
+    timeLabel: 
+    timeValueUtc: 0
+  - id: mend
+    kind: 3
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options: []
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0

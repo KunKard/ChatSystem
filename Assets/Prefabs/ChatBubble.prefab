@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 6572991310963177120}
   - component: {fileID: 4142223798753425088}
   - component: {fileID: 1692645582041440837}
+  - component: {fileID: 3477999912343032698}
   m_Layer: 5
   m_Name: ChatBubble
   m_TagString: Untagged
@@ -213,6 +214,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &3477999912343032698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876294578695905492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cf613d722bfa454285d3a0afb0a4e4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarImage: {fileID: 6066565739572629416}
+  nameText: {fileID: 5755641706682256976}
+  bodyRoot: {fileID: 2743706334404556685}
+  bodyText: {fileID: 4634377754301956744}
+  stickerRoot: {fileID: 2006113950137737847}
+  stickerImage: {fileID: 2005957912721622743}
+  isPlayerSide: 0
 --- !u!1 &2006113950137737847
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,6 +244,7 @@ GameObject:
   - component: {fileID: 292255616756760228}
   - component: {fileID: 9089359285863438453}
   - component: {fileID: 2005957912721622743}
+  - component: {fileID: 3076707948922599507}
   m_Layer: 5
   m_Name: Sticker
   m_TagString: Untagged
@@ -288,6 +309,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3076707948922599507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006113950137737847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: 200
+  m_MinHeight: 200
+  m_PreferredWidth: 200
+  m_PreferredHeight: 200
+  m_FlexibleWidth: 0
+  m_FlexibleHeight: 0
+  m_LayoutPriority: 1
 --- !u!1 &2743706334404556685
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,7 +751,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -55.44635, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
