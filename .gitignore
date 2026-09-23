@@ -49,9 +49,24 @@ Thumbs.db
 desktop.ini
 
 # ============================================================
-#  字体授权：Genshin.ttf 是米哈游专有字体（客户端提取物）。
-#  本工程为公开仓库，故不随源码分发，需自行放置后重新生成 SDF。
-#  详见 Logs/Docs/Design.md 附录 A.3
+#  字体：源 TTF 与派生出的 SDF 图集都不入库
+#
+#  ① 授权：Genshin.ttf 是米哈游专有字体（客户端提取物），本工程为公开仓库。
+#     详见 Logs/Docs/Design.md 附录 A.3
+#
+#  ② 体积：SDF 图集实测 18 MB，属于"能被重新生成的二进制"。
+#     字体图集每重新生成一次就产生一个全新的 18 MB blob 永久留在历史里，
+#     实测会让 git push 直接超时失败（HTTP 502/408）。
+#
+#  ⚠️ 但 Genshin SDF.asset.meta 必须入库，且生成时路径不能变。
+#     GUID f8f38b0ba8bf4ef4d91831e7d8b27c62 被 TMP Settings 的
+#     m_defaultFontAsset（全工程默认字体）与 5 个预制体/场景引用。
+#     留着 .meta 再按原路径重新生成，AssetDatabase 会复用同一 GUID，
+#     上述引用全部自动恢复，无需手工重接。
+#
+#  换字体时按同样规则处理：新字体的 SDF 也会被下面这条通配符挡住，
+#  只需保证它的 .meta 入库、且生成路径与 .meta 同级同名。
 # ============================================================
 /Assets/TextMesh Pro/Fonts/Genshin.ttf
 /Assets/TextMesh Pro/Fonts/Genshin.ttf.meta
+/Assets/TextMesh Pro/Fonts/*SDF.asset
