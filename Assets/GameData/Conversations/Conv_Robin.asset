@@ -120,7 +120,43 @@ MonoBehaviour:
       assetName: 
     options: []
     delaySeconds: 0.5
-    nextId: end
+    nextId: a3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: a3
+    kind: 2
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options: []
+    delaySeconds: 2
+    nextId: a4
+    timeLabel: 
+    timeValueUtc: 0
+  - id: a4
+    kind: 0
+    message:
+      kind: 2
+      senderId: robin
+      text: 
+      assetName: photo_seat_map
+    options: []
+    delaySeconds: 0.8
+    nextId: a5
+    timeLabel: 
+    timeValueUtc: 0
+  - id: a5
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u5EA7\u4F4D\u56FE\u53D1\u4F60\u4E86\uFF0C\u522B\u627E\u9519\u95E8\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: r2a
     timeLabel: 
     timeValueUtc: 0
   - id: b1
@@ -132,7 +168,43 @@ MonoBehaviour:
       assetName: 
     options: []
     delaySeconds: 0.5
-    nextId: end
+    nextId: b2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: b2
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u2026\u2026\u4F60\u662F\u4E0D\u662F\u53C8\u5FD8\u4E86\u6211\u8BF4\u8FC7\u7684\u8BDD\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 1.6
+    nextId: b3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: b3
+    kind: 2
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options: []
+    delaySeconds: 1.2
+    nextId: b4
+    timeLabel: 
+    timeValueUtc: 0
+  - id: b4
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u4E0A\u6B21\u4E5F\u662F\u8FD9\u6837\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: r2a
     timeLabel: 
     timeValueUtc: 0
   - id: c1
@@ -144,6 +216,202 @@ MonoBehaviour:
       assetName: 
     options: []
     delaySeconds: 2
+    nextId: c2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: c2
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u4E0D\u8FC7\u4F60\u8981\u662F\u53C8\u653E\u6211\u9E3D\u5B50\u2639"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: c3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: c3
+    kind: 0
+    message:
+      kind: 1
+      senderId: robin
+      text: 
+      assetName: sticker_robin_02
+    options: []
+    delaySeconds: 0.8
+    nextId: r2b
+    timeLabel: 
+    timeValueUtc: 0
+  - id: r2a
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u90A3\u5C31\u63D0\u524D\u534A\u5C0F\u65F6\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: r2a2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: r2a2
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u6211\u8BA9\u5DE5\u4F5C\u4EBA\u5458\u5728\u95E8\u53E3\u7B49\u4F60\uFF0C\u62A5\u6211\u540D\u5B57\u5C31\u884C\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: r2a3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: r2a3
+    kind: 1
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options:
+    - text: "\u597D\uFF0C\u6211\u63D0\u524D\u5230"
+      nextId: e1
+      timeLabel: 
+      timeValueUtc: 0
+    - text: "\u4E0D\u7528\u9EBB\u70E6\uFF0C\u6211\u81EA\u5DF1\u8FDB\u5F97\u53BB"
+      nextId: e2
+      timeLabel: 
+      timeValueUtc: 0
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0
+  - id: r2b
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u2026\u2026"
+      assetName: 
+    options: []
+    delaySeconds: 1.2
+    nextId: r2b2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: r2b2
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u7B97\u4E86\uFF0C\u968F\u4F60\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: r2b3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: r2b3
+    kind: 1
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options:
+    - text: "\u751F\u6C14\u4E86\uFF1F"
+      nextId: e3
+      timeLabel: 
+      timeValueUtc: 0
+    - text: "\u6211\u5C3D\u91CF\u65E9\u70B9\u5230"
+      nextId: e4
+      timeLabel: 
+      timeValueUtc: 0
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0
+  - id: e1
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u55EF\u3002\u5230\u65F6\u5019\u89C1\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: e1b
+    timeLabel: 
+    timeValueUtc: 0
+  - id: e1b
+    kind: 0
+    message:
+      kind: 1
+      senderId: robin
+      text: 
+      assetName: sticker_robin_03
+    options: []
+    delaySeconds: 0.8
+    nextId: end
+    timeLabel: 
+    timeValueUtc: 0
+  - id: e2
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u2026\u2026\u968F\u4F60\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: end
+    timeLabel: 
+    timeValueUtc: 0
+  - id: e3
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u6CA1\u6709\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: e3b
+    timeLabel: 
+    timeValueUtc: 0
+  - id: e3b
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u6211\u751F\u4EC0\u4E48\u6C14\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 1
+    nextId: e3c
+    timeLabel: 
+    timeValueUtc: 0
+  - id: e3c
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u2026\u2026\u8BB0\u5F97\u5E26\u7968\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: end
+    timeLabel: 
+    timeValueUtc: 0
+  - id: e4
+    kind: 0
+    message:
+      kind: 0
+      senderId: robin
+      text: "\u55EF\uFF0C\u5C3D\u91CF\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0
     nextId: end
     timeLabel: 
     timeValueUtc: 0

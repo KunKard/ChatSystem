@@ -15,5 +15,5 @@ MonoBehaviour:
   id: robin
   displayName: "\u77E5\u66F4\u9E1F"
   signature: "\u6B63\u5728\u7B79\u5907\u4E0B\u4E00\u573A\u6F14\u51FA"
-  avatar: {fileID: 0}
+  avatar: {fileID: 21300000, guid: 44d63888cf8022347a8217155d49ec9e, type: 3}
   defaultPreview: "\u4F60\u7EC8\u4E8E\u56DE\u6211\u6D88\u606F\u4E86"

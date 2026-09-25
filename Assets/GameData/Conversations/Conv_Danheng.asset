@@ -64,6 +64,18 @@ MonoBehaviour:
       assetName: 
     options: []
     delaySeconds: 1.6
+    nextId: da2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: da2
+    kind: 0
+    message:
+      kind: 0
+      senderId: danheng
+      text: "\u6709\u7591\u95EE\u968F\u65F6\u95EE\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0
     nextId: dend
     timeLabel: 
     timeValueUtc: 0

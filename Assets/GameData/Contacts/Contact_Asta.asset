@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cce130b3fb8156d48bb5dde58d65ae21, type: 3}
-  m_Name: Contact_Danheng
+  m_Name: Contact_Asta
   m_EditorClassIdentifier: 
-  id: danheng
-  displayName: "\u4E39\u6052"
-  signature: "\u52FF\u6270"
+  id: asta
+  displayName: "\u827E\u4E1D\u59B2"
+  signature: "\u9884\u7B97\u8868\u4EC0\u4E48\u65F6\u5019\u80FD\u597D"
   avatar: {fileID: 21300000, guid: 44d63888cf8022347a8217155d49ec9e, type: 3}
-  defaultPreview: "\u8D44\u6599\u653E\u5728\u684C\u4E0A\u4E86"
+  defaultPreview: "\u5728\u5417\u5728\u5417"

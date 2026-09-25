@@ -80,7 +80,39 @@ MonoBehaviour:
       assetName: sticker_march7_01
     options: []
     delaySeconds: 0.8
-    nextId: mend
+    nextId: ma3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: ma3
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u600E\u4E48\u6837\uFF0C\u8FD9\u5F20\u662F\u4E0D\u662F\u5F88\u6709\u6C1B\u56F4\u611F\U0001F60D"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: ma4
+    timeLabel: 
+    timeValueUtc: 0
+  - id: ma4
+    kind: 1
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options:
+    - text: "\u8FD8\u884C"
+      nextId: me1
+      timeLabel: 
+      timeValueUtc: 0
+    - text: "\u7CCA\u4E86"
+      nextId: me2
+      timeLabel: 
+      timeValueUtc: 0
+    delaySeconds: 0
+    nextId: 
     timeLabel: 
     timeValueUtc: 0
   - id: mb1
@@ -104,6 +136,90 @@ MonoBehaviour:
       assetName: 
     options: []
     delaySeconds: 1.4
+    nextId: mb3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: mb3
+    kind: 0
+    message:
+      kind: 1
+      senderId: march7
+      text: 
+      assetName: sticker_march7_02
+    options: []
+    delaySeconds: 0.8
+    nextId: ma3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: me1
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u4EC0\u4E48\u53EB\u300C\u8FD8\u884C\u300D\uFF01"
+      assetName: 
+    options: []
+    delaySeconds: 0.3
+    nextId: me1b
+    timeLabel: 
+    timeValueUtc: 0
+  - id: me1b
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u4F60\u6839\u672C\u4E0D\u61C2\u6B23\u8D4F"
+      assetName: 
+    options: []
+    delaySeconds: 0.8
+    nextId: me1c
+    timeLabel: 
+    timeValueUtc: 0
+  - id: me1c
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u2026\u2026\u7B97\u4E86\uFF0C\u53CD\u6B63\u6211\u53D1\u90FD\u53D1\u4E86"
+      assetName: 
+    options: []
+    delaySeconds: 1.2
+    nextId: mend
+    timeLabel: 
+    timeValueUtc: 0
+  - id: me2
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u2026\u2026"
+      assetName: 
+    options: []
+    delaySeconds: 1
+    nextId: me2b
+    timeLabel: 
+    timeValueUtc: 0
+  - id: me2b
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u6211\u6EE4\u955C\u90FD\u8C03\u4E86\u534A\u4E2A\u5C0F\u65F6"
+      assetName: 
+    options: []
+    delaySeconds: 1
+    nextId: me2c
+    timeLabel: 
+    timeValueUtc: 0
+  - id: me2c
+    kind: 0
+    message:
+      kind: 0
+      senderId: march7
+      text: "\u4E0D\u7ED9\u4F60\u770B\u4E86"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
     nextId: mend
     timeLabel: 
     timeValueUtc: 0

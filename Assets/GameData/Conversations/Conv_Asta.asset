@@ -1,0 +1,409 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ef3a841018da394f85eb41fd13b1762, type: 3}
+  m_Name: Conv_Asta
+  m_EditorClassIdentifier: 
+  contact: {fileID: 11400000, guid: 346cd16c7497bf948b3cf05810e062ec, type: 2}
+  entryNodeId: s1
+  nodes:
+  - id: s1
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u5728\u5417"
+      assetName: 
+    options: []
+    delaySeconds: 0
+    nextId: s2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s2
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u5728\u5417\u5728\u5417"
+      assetName: 
+    options: []
+    delaySeconds: 0
+    nextId: s3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s3
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u6025\u4E8B\uFF01"
+      assetName: 
+    options: []
+    delaySeconds: 0
+    nextId: s4
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s4
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u2026\u2026"
+      assetName: 
+    options: []
+    delaySeconds: 0.3
+    nextId: s5
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s5
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u7B97\u4E86\uFF0C\u4E5F\u4E0D\u662F\u5F88\u6025"
+      assetName: 
+    options: []
+    delaySeconds: 0.8
+    nextId: s6
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s6
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u5C31\u662F\u90A3\u4E2A\u9884\u7B97\u8868"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: s7
+    timeLabel: "\u4ECA\u5929 11:20"
+    timeValueUtc: 1789615200
+  - id: s7
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u4F60\u586B\u7684\u90A3\u4E2A\u6570\u5B57\u662F\u4E0D\u662F\u5C11\u4E86\u4E2A\u96F6\U0001F605"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: s8
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s8
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u6211\u95EE\u4E86\u8D22\u52A1\uFF0C\u4ED6\u4EEC\u8BF4\u5BF9\u4E0D\u4E0A"
+      assetName: 
+    options: []
+    delaySeconds: 0.4
+    nextId: s9
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s9
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u7136\u540E\u6211\u53C8\u81EA\u5DF1\u7B97\u4E86\u4E00\u904D"
+      assetName: 
+    options: []
+    delaySeconds: 0.4
+    nextId: s10
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s10
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u8FD8\u662F\u5BF9\u4E0D\u4E0A"
+      assetName: 
+    options: []
+    delaySeconds: 0.4
+    nextId: s11
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s11
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u6211\u662F\u4E0D\u662F\u7B97\u9519\u4E86\U0001F605"
+      assetName: 
+    options: []
+    delaySeconds: 0.6
+    nextId: s12
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s12
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u4E0D\u53EF\u80FD\u554A\u6211\u6570\u5B66\u5F88\u597D\u7684"
+      assetName: 
+    options: []
+    delaySeconds: 0.4
+    nextId: s13
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s13
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u2026\u2026\u597D\u5427\uFF0C\u6211\u91CD\u7B97"
+      assetName: 
+    options: []
+    delaySeconds: 1.2
+    nextId: s14
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s14
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u4F60\u522B\u8D70\u5F00\u554A"
+      assetName: 
+    options: []
+    delaySeconds: 0.4
+    nextId: s15
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s15
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u5728\u5417"
+      assetName: 
+    options: []
+    delaySeconds: 0.4
+    nextId: s16
+    timeLabel: 
+    timeValueUtc: 0
+  - id: s16
+    kind: 1
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options:
+    - text: "\u6CA1\u5C11\uFF0C\u5C31\u662F\u8FD9\u4E48\u591A"
+      nextId: sa1
+      timeLabel: 
+      timeValueUtc: 0
+    - text: "\u6211\u770B\u770B"
+      nextId: sb1
+      timeLabel: 
+      timeValueUtc: 0
+    - text: "\u2026\u2026\U0001F605"
+      nextId: sc1
+      timeLabel: 
+      timeValueUtc: 0
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0
+  - id: sa1
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\uFF1F\uFF1F\uFF1F"
+      assetName: 
+    options: []
+    delaySeconds: 0
+    nextId: sa2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: sa2
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u4F60\u600E\u4E48\u8FD9\u4E48\u6DE1\u5B9A\U0001F605"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: sa3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: sa3
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u7B97\u4E86\uFF0C\u6211\u81EA\u5DF1\u518D\u6838\u4E00\u904D\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: sa4
+    timeLabel: 
+    timeValueUtc: 0
+  - id: sb1
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u5FEB\u70B9\u554A\uFF0C\u6211\u7B49\u4F60\U0001F60A"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: sb2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: sb2
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u2026\u2026\u8FD8\u6CA1\u597D\u5417"
+      assetName: 
+    options: []
+    delaySeconds: 1.8
+    nextId: sb3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: sb3
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u597D\u5427\u6211\u627F\u8BA4\uFF0C\u6211\u4E5F\u4E0D\u592A\u786E\u5B9A\U0001F605"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: sa3
+    timeLabel: 
+    timeValueUtc: 0
+  - id: sc1
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u522B\u5149\u53D1\u8868\u60C5\uFF01"
+      assetName: 
+    options: []
+    delaySeconds: 0.3
+    nextId: sc2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: sc2
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u7ED9\u6211\u4E2A\u75DB\u5FEB\u8BDD\U0001F606"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: sb2
+    timeLabel: 
+    timeValueUtc: 0
+  - id: sa4
+    kind: 1
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options:
+    - text: "\u8F9B\u82E6\u4E86"
+      nextId: se1
+      timeLabel: 
+      timeValueUtc: 0
+    - text: "\u6838\u5B8C\u53D1\u6211\u4E00\u4EFD"
+      nextId: se2
+      timeLabel: 
+      timeValueUtc: 0
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0
+  - id: se1
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u8F9B\u82E6\u4EC0\u4E48\uFF0C\u8FD9\u662F\u6211\u7684\u6D3B\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: se1b
+    timeLabel: 
+    timeValueUtc: 0
+  - id: se1b
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u2026\u2026\u8C22\u8C22\U0001F60A"
+      assetName: 
+    options: []
+    delaySeconds: 1.2
+    nextId: send
+    timeLabel: 
+    timeValueUtc: 0
+  - id: se2
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u597D\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.6
+    nextId: se2b
+    timeLabel: 
+    timeValueUtc: 0
+  - id: se2b
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u6838\u5B8C\u53D1\u4F60\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0.5
+    nextId: se2c
+    timeLabel: 
+    timeValueUtc: 0
+  - id: se2c
+    kind: 0
+    message:
+      kind: 0
+      senderId: asta
+      text: "\u4F60\u4E5F\u65E9\u70B9\u7761\u3002"
+      assetName: 
+    options: []
+    delaySeconds: 0
+    nextId: send
+    timeLabel: 
+    timeValueUtc: 0
+  - id: send
+    kind: 3
+    message:
+      kind: 0
+      senderId: 
+      text: 
+      assetName: 
+    options: []
+    delaySeconds: 0
+    nextId: 
+    timeLabel: 
+    timeValueUtc: 0

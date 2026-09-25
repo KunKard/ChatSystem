@@ -15,5 +15,5 @@ MonoBehaviour:
   id: march7
   displayName: "\u4E09\u6708\u4E03"
   signature: "\u4ECA\u5929\u4E5F\u8981\u5143\u6C14\u6EE1\u6EE1\uFF01"
-  avatar: {fileID: 0}
+  avatar: {fileID: 21300000, guid: 44d63888cf8022347a8217155d49ec9e, type: 3}
   defaultPreview: "\u5582\uFF01\u5728\u5417\u5728\u5417"
