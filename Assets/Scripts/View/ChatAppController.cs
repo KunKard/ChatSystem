@@ -94,7 +94,11 @@ namespace ChatSystem.View
             for (int i = 0; i < _ordered.Count; i++)
             {
                 var session = _ordered[i];
-                session.Runner.Start(session.Asset.entryNodeId);
+
+                // 载入历史而不是逐条播放：打开会话时该立刻看到已有的聊天记录，
+                // 之后由玩家选择触发的新消息才走延迟 + 打字指示器。
+                // 这里会同步跑完每个会话到第一个选项之前的所有内容
+                session.Runner.StartLoadingHistory(session.Asset.entryNodeId);
             }
 
             string first = string.IsNullOrEmpty(initialContactId)

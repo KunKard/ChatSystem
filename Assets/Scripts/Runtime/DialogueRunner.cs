@@ -38,12 +38,31 @@ namespace ChatSystem.Runtime
         private readonly ConversationAsset _asset;
         private readonly string _contactId;
 
+        /// <summary>载入历史时一次同步推进的节点数上限。</summary>
+        /// <remarks>
+        /// 载入历史会跳过<b>全部</b>延迟，于是整条初始链路都在一次调用里同步走完。
+        /// 节点一旦成环就不再是"慢慢循环"，而是无限递归 —— 表现为 Unity 直接崩栈，
+        /// 连报错都来不及打。这个上限把它降级成一条可读的错误日志。
+        /// <para>
+        /// 取 1000 是因为它同时约等于同步递归的安全深度：<see cref="EnterNode"/> 每帧
+        /// 约 200 字节，1000 帧约 200 KB，远低于默认 1 MB 的线程栈。
+        /// 压力测试用的 500 条消息在这个上限之内。
+        /// </para>
+        /// </remarks>
+        private const int MaxHistorySteps = 1000;
+
         private string _currentNodeId;
         private float _remainingDelay;
         private DialogueNode _delayedNode;   // 延迟结束后要发出的 Message 节点；Wait 节点为 null
         private bool _waitingForChoice;
         private bool _running;
         private bool _typing;
+
+        /// <summary>本次推进是否处于"载入历史"模式，见 <see cref="StartLoadingHistory"/>。</summary>
+        private bool _loadingHistory;
+
+        /// <summary>载入历史期间已同步推进的节点数，见 <see cref="MaxHistorySteps"/>。</summary>
+        private int _historySteps;
 
         public DialogueRunner(ConversationAsset asset)
         {
@@ -78,6 +97,42 @@ namespace ChatSystem.Runtime
         {
             _running = true;
             EnterNode(entryNodeId);
+        }
+
+        /// <summary>
+        /// 从入口节点开始推进，并<b>立即</b>走完到达第一个选项（或对话结束）之前的全部内容。
+        /// </summary>
+        /// <remarks>
+        /// 这是"打开会话"该有的样子：界面上先看到的历史在玩家打开之前就已经发生过了，
+        /// 一条条延迟浮现会把历史误演成正在进行的对话。因此载入期间：
+        /// <list type="bullet">
+        /// <item>忽略 <c>delaySeconds</c> 与字数折算，消息立即发出；</item>
+        /// <item>忽略 <see cref="NodeKind.Wait"/> 的停顿（它只是节奏控制）；</item>
+        /// <item>不触发"正在输入"——没有人在打字，这些消息早就发完了。</item>
+        /// </list>
+        /// <para>
+        /// <b>停在第一个 Choice 节点</b>。玩家做出选择之后的消息才真正"正在到达"，
+        /// 那条路径照常走 <see cref="Tick"/> 与打字指示器 —— 这正是本次改动想要的分界。
+        /// </para>
+        /// <para>
+        /// 需要 <see cref="MaxHistorySteps"/> 兜底：跳过全部延迟意味着整条链路在一次调用里
+        /// 同步走完，成环的节点图会变成无限递归。
+        /// </para>
+        /// </remarks>
+        public void StartLoadingHistory(string entryNodeId)
+        {
+            _historySteps = 0;
+            _loadingHistory = true;
+            try
+            {
+                Start(entryNodeId);
+            }
+            finally
+            {
+                // 放在 finally：Start 会同步触发 OnMessageEmitted / OnChoicesPresented，
+                // 订阅者抛异常时也要把标志位还原，否则整个 Runner 会永远停在载入语义上
+                _loadingHistory = false;
+            }
         }
 
         /// <summary>推进到当前节点的 <c>nextId</c>。</summary>
@@ -200,6 +255,17 @@ namespace ChatSystem.Runtime
                 return;
             }
 
+            // 载入历史时全程同步推进，成环的节点图会无限递归。见 MaxHistorySteps
+            if (_loadingHistory && ++_historySteps > MaxHistorySteps)
+            {
+                Debug.LogError(
+                    $"[ChatSystem] 载入历史时连续推进超过 {MaxHistorySteps} 个节点，疑似节点成环。" +
+                    $"已中断载入。请用 ChatSystem/DialogueValidator 检查资产。",
+                    _asset);
+                End();
+                return;
+            }
+
             var node = _asset.GetNode(id);
             if (node == null)
             {
@@ -216,7 +282,9 @@ namespace ChatSystem.Runtime
             switch (node.kind)
             {
                 case NodeKind.Message:
-                    if (node.delaySeconds > 0f)
+                    // 载入历史时无视延迟：这些消息在玩家打开会话之前就发生过了，
+                    // 让它们一条条浮现会把历史误演成正在进行的对话
+                    if (node.delaySeconds > 0f && !_loadingHistory)
                     {
                         _delayedNode = node;
 
@@ -234,6 +302,7 @@ namespace ChatSystem.Runtime
                     break;
 
                 case NodeKind.Choice:
+                    // 选项节点就是载入的终点，不受 _loadingHistory 影响
                     _waitingForChoice = true;
                     SetTyping(false);
                     OnChoicesPresented?.Invoke(node.options);
@@ -241,9 +310,11 @@ namespace ChatSystem.Runtime
 
                 case NodeKind.Wait:
                     _delayedNode = null;
-                    _remainingDelay = node.delaySeconds > 0f ? node.delaySeconds : 0f;
-                    // Wait 本身不发声，看它后面第一条消息是不是 NPC 的，来决定要不要显示"正在输入"
-                    SetTyping(IsNpcMessage(PeekNextMessage(node)));
+                    // Wait 是纯节奏控制（"对方停顿了一下"），载入历史时同样跳过
+                    _remainingDelay = (_loadingHistory || node.delaySeconds <= 0f) ? 0f : node.delaySeconds;
+                    // Wait 本身不发声，看它后面第一条消息是不是 NPC 的，来决定要不要显示"正在输入"。
+                    // 载入历史时没有人在打字，一律不显示
+                    SetTyping(!_loadingHistory && IsNpcMessage(PeekNextMessage(node)));
                     if (_remainingDelay <= 0f) AutoAdvance(node);
                     break;
 

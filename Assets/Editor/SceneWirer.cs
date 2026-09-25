@@ -255,6 +255,7 @@ namespace ChatSystem.EditorTools
                 .Ref("playerBubblePrefab", playerPrefab != null ? playerPrefab.GetComponent<BubbleView>() : null)
                 .Ref("dividerPrefab", dividerPrefab != null ? dividerPrefab.GetComponent<TimeDividerView>() : null)
                 .Ref("typingIndicatorPrefab", typingPrefab != null ? typingPrefab.GetComponent<TypingIndicator>() : null)
+                .RefIfNotNull("playerProfile", AvatarWirer.FindPlayerProfile())
                 .Apply();
 
             new RefSetter(list)
@@ -449,6 +450,18 @@ namespace ChatSystem.EditorTools
                 var property = Find(field);
                 if (property != null) property.objectReferenceValue = value;
                 return this;
+            }
+
+            /// <summary>
+            /// 只在值非空时写入。
+            /// </summary>
+            /// <remarks>
+            /// 用于"找不到就保持原样"的引用：<see cref="Ref"/> 传 <c>null</c> 会<b>清掉</b>已有的接线，
+            /// 于是资产一时找不到就会静默毁掉一条本来好好的引用。
+            /// </remarks>
+            public RefSetter RefIfNotNull(string field, Object value)
+            {
+                return value == null ? this : Ref(field, value);
             }
 
             public RefSetter Bool(string field, bool value)

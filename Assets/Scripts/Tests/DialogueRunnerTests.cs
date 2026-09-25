@@ -324,6 +324,161 @@ namespace ChatSystem.Tests
             Assert.IsFalse(rec.LastTyping, "对话中断后签名不能永远卡在\"对方正在输入…\"");
         }
 
+        // ── 载入历史 ────────────────────────────────────────────────
+
+        [Test]
+        public void 载入历史_忽略全部延迟_一次同步发出()
+        {
+            // 历史在玩家打开会话之前就发生过了，一条条浮现会把历史误演成正在进行的对话
+            var asset = MakeAsset("robin",
+                Msg("h1", "在吗", next: "h2", delay: 5f),
+                Msg("h2", new string('字', 200), next: "c1", delay: 5f),
+                Choice("c1", Opt("在的", "e1")),
+                End("e1"));
+
+            var runner = Run(asset, out var rec);
+            runner.StartLoadingHistory("h1");
+
+            Assert.AreEqual(2, rec.Messages.Count, "无需任何 Tick，历史应已全部就位");
+            Assert.AreEqual("在吗", rec.Messages[0].text);
+            Assert.AreEqual(200, rec.Messages[1].text.Length,
+                "字数折算出的超长等待同样要跳过");
+            Assert.IsTrue(runner.IsWaitingForChoice, "应停在第一个选项节点");
+        }
+
+        [Test]
+        public void 载入历史_不显示正在输入()
+        {
+            var asset = MakeAsset("robin",
+                Wait("w1", 3f, "h1"),
+                Msg("h1", "在吗", next: "h2", delay: 3f),
+                Choice("h2", Opt("在的", "e1")),
+                End("e1"));
+
+            var runner = Run(asset, out var rec);
+            runner.StartLoadingHistory("w1");
+
+            // 断言"从未进入过"，而不是"最后一次是 false"——后者漏得掉 true→false 的一闪
+            Assert.IsFalse(rec.Typing.Exists(t => t), "没有人在打字——这些消息早就发完了");
+            Assert.AreEqual(1, rec.Messages.Count);
+        }
+
+        [Test]
+        public void 载入历史_停在第一个选项_其后的消息不发出()
+        {
+            var asset = MakeAsset("robin",
+                Msg("h1", "历史", next: "c1", delay: 2f),
+                Choice("c1", Opt("选项一", "n1"), Opt("选项二", "n2")),
+                Msg("n1", "回复一", next: "n3"),
+                Msg("n2", "回复二", next: "n3"),
+                End("n3"));
+
+            var runner = Run(asset, out var rec);
+            runner.StartLoadingHistory("h1");
+
+            Assert.AreEqual(1, rec.Messages.Count, "选项之后的内容属于\"尚未发生\"");
+            Assert.AreEqual(1, rec.Choices.Count);
+            Assert.AreEqual(2, rec.Choices[0].Count);
+        }
+
+        [Test]
+        public void 载入历史_选择之后恢复延迟与正在输入()
+        {
+            // 这是本次改动的分界线：载入完历史后，玩家选择触发的消息才是"正在到达"
+            var asset = MakeAsset("robin",
+                Msg("h1", "历史", next: "c1", delay: 5f),
+                Choice("c1", Opt("在的", "n1")),
+                Msg("n1", "那就好", next: "e1", delay: 3f),
+                End("e1"));
+
+            var runner = Run(asset, out var rec);
+            runner.StartLoadingHistory("h1");
+            runner.Choose(0);
+
+            Assert.AreEqual(2, rec.Messages.Count);
+            Assert.AreEqual("在的", rec.Messages[1].text);
+            Assert.IsTrue(rec.LastTyping, "选择之后才该出现打字指示器");
+
+            runner.Tick(3f);
+            Assert.AreEqual(3, rec.Messages.Count);
+            Assert.AreEqual("那就好", rec.Messages[2].text);
+            Assert.IsFalse(rec.LastTyping, "消息到达后应结束输入状态");
+        }
+
+        [Test]
+        public void 载入历史_无选项时一路走到结束()
+        {
+            var asset = MakeAsset("robin",
+                Msg("h1", "A", next: "h2", delay: 4f),
+                Msg("h2", "B", next: "e1", delay: 4f),
+                End("e1"));
+
+            var runner = Run(asset, out var rec);
+            runner.StartLoadingHistory("h1");
+
+            Assert.AreEqual(2, rec.Messages.Count);
+            Assert.AreEqual(1, rec.EndedCount);
+            Assert.IsFalse(runner.IsRunning);
+        }
+
+        [Test]
+        public void 载入历史_跳过Wait停顿()
+        {
+            var asset = MakeAsset("robin",
+                Wait("w1", 3f, "w2"),
+                Wait("w2", 3f, "h1"),
+                Msg("h1", "久等了", next: "c1"),
+                Choice("c1", Opt("没事", "e1")),
+                End("e1"));
+
+            var runner = Run(asset, out var rec);
+            runner.StartLoadingHistory("w1");
+
+            Assert.AreEqual(1, rec.Messages.Count, "Wait 只是节奏控制，历史里不该有停顿");
+        }
+
+        [Test]
+        public void 载入历史_节点成环_报错中断而不是无限递归()
+        {
+            // 跳过全部延迟意味着整条链路在一次调用里同步走完：
+            // 节点成环就不再是"慢慢循环"，而是把线程栈撑爆的无限递归
+            var asset = MakeAsset("robin",
+                Msg("n1", "A", next: "n2"),
+                Msg("n2", "B", next: "n1"));
+
+            var runner = Run(asset, out var rec);
+
+            LogAssert.Expect(LogType.Error, new Regex("成环"));
+            runner.StartLoadingHistory("n1");
+
+            Assert.AreEqual(1, rec.EndedCount, "应被上限拦下并正常收尾");
+            Assert.IsFalse(runner.IsRunning);
+            Assert.LessOrEqual(rec.Messages.Count, 1000, "应被 MaxHistorySteps 截断");
+        }
+
+        [Test]
+        public void 载入历史_结束后标志位还原_再次Start照常走延迟()
+        {
+            var asset = MakeAsset("robin",
+                Msg("h1", "A", next: "h2", delay: 2f),
+                Msg("h2", "B", next: "e1", delay: 2f),
+                End("e1"));
+
+            var runner = Run(asset, out var rec);
+            runner.StartLoadingHistory("h1");
+            Assert.AreEqual(2, rec.Messages.Count);
+
+            rec.Messages.Clear();
+            runner.Start("h1");
+
+            Assert.AreEqual(0, rec.Messages.Count, "第二次是普通播放，必须等延迟");
+            Assert.IsTrue(rec.LastTyping);
+
+            runner.Tick(2f);
+            Assert.AreEqual(1, rec.Messages.Count);
+            Assert.AreEqual("A", rec.Messages[0].text);
+        }
+
         // ── 选项 ────────────────────────────────────────────────────
 
         [Test]
