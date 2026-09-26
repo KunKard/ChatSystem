@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using ChatSystem.Data;
 using ChatSystem.Data.Model;
+using ChatSystem.EditorTools;
 using ChatSystem.Runtime;
 
 namespace LogicCheck
@@ -123,6 +124,9 @@ namespace LogicCheck
             dividers();
             restore();
             session();
+            validator();
+            nodeIdUtility();
+            mediaLibrary();
 
             Console.WriteLine($"\n通过 {_pass}，失败 {_failures.Count}");
             if (_failures.Count > 0)
@@ -428,7 +432,10 @@ namespace LogicCheck
             var d = Asset("robin", Msg("n1", "A", next: "n2", delay: 1f), Msg("n2", "B", next: "n3"), End("n3"));
             var sd = new ChatSession(d) { IsActive = true };
             sd.Runner.Start("n1");
-            Eq(ChatSession.TypingText, sd.PreviewText, "输入中优先显示正在输入");
+            // 输入期间预览**不**变成"正在输入"：整个界面里表示它的只留消息区那个三点气泡。
+            // 这条断言守的是那个有意偏离设计文档的决定，别再改回去
+            Eq("默认预览", sd.PreviewText, "输入期间预览不被替换");
+            Check(sd.IsTyping, "输入状态本身仍在 IsTyping 上（供三点气泡用）");
             sd.Tick(1f);
             Eq("B", sd.PreviewText, "输入结束后回落到最后一条消息");
 
@@ -450,6 +457,252 @@ namespace LogicCheck
             Eq(1, sf.Messages.Count, "恢复载入历史");
             Eq("n2", sf.CurrentNodeId, "恢复还原游标");
             Eq(4000L, sf.LastTimedValueUtc, "恢复接上时间基线");
+        }
+
+        // ── DialogueValidator ───────────────────────────────────────
+
+        private static int Errors(List<ValidationIssue> issues)
+        {
+            int n = 0;
+            foreach (var issue in issues) if (issue.Severity == IssueSeverity.Error) n++;
+            return n;
+        }
+
+        private static int Warnings(List<ValidationIssue> issues)
+        {
+            int n = 0;
+            foreach (var issue in issues) if (issue.Severity == IssueSeverity.Warning) n++;
+            return n;
+        }
+
+        private static bool Flagged(List<ValidationIssue> issues, int nodeIndex)
+        {
+            foreach (var issue in issues) if (issue.NodeIndex == nodeIndex) return true;
+            return false;
+        }
+
+        private static bool Mentions(List<ValidationIssue> issues, string fragment)
+        {
+            foreach (var issue in issues)
+            {
+                if (issue.Message.Contains(fragment) || (issue.FixHint ?? "").Contains(fragment)) return true;
+            }
+            return false;
+        }
+
+        private static void validator()
+        {
+            Section("DialogueValidator 基础规则");
+
+            // 干净资产必须零问题 —— 这既是"校验器不误报"的底线，也是真实数据的回归基线
+            var clean = Asset("robin", Msg("n1", "A", next: "n2"), End("n2"));
+            Eq(0, DialogueValidator.Validate(clean).Count, "干净资产零问题");
+
+            var dangling = Asset("robin", Msg("n1", "A", next: "nope"));
+            var dIssues = DialogueValidator.Validate(dangling);
+            Eq(1, Errors(dIssues), "断链 → 1 个错误");
+            Check(Flagged(dIssues, 0), "断链定位到第 0 个节点");
+
+            // Verify 漏掉的那条：Wait 的 nextId 为空，与 Message 同等严重
+            var waitNoNext = Asset("robin", Wait("n1", 1f, null));
+            Eq(1, Errors(DialogueValidator.Validate(waitNoNext)), "Wait 没有 nextId → 1 个错误");
+
+            var noNext = Asset("robin", Msg("n1", "A"));
+            Eq(1, Errors(DialogueValidator.Validate(noNext)), "Message 没有 nextId → 1 个错误");
+
+            var noEntry = Asset("robin", Msg("n1", "A", next: "n2"), End("n2"));
+            noEntry.entryNodeId = null;
+            Eq(1, Errors(DialogueValidator.Validate(noEntry)), "入口为空 → 1 个错误");
+
+            var badEntry = Asset("robin", Msg("n1", "A", next: "n2"), End("n2"));
+            badEntry.entryNodeId = "gone";
+            Eq(1, Errors(DialogueValidator.Validate(badEntry)), "入口不存在 → 1 个错误");
+
+            var noContact = Asset("robin", End("n1"));
+            noContact.contact = null;
+            Check(Mentions(DialogueValidator.Validate(noContact), "联系人"), "联系人缺失被报出");
+
+            var empty = Asset("robin");
+            Eq(1, Errors(DialogueValidator.Validate(empty)), "空节点表 → 1 个错误（不重复报入口）");
+
+            Section("DialogueValidator 节点身份");
+
+            var dup = Asset("robin", End("n1"), End("n1"));
+            var dupIssues = DialogueValidator.Validate(dup);
+            Eq(1, Errors(dupIssues), "重复 ID → 1 个错误");
+            Check(Flagged(dupIssues, 1), "重复 ID 定位到落选的那一个");
+
+            var noId = Asset("robin", End("n1"), End(""));
+            Check(Flagged(DialogueValidator.Validate(noId), 1), "空 ID 被报出");
+
+            var nullNode = Asset("robin", End("n1"));
+            nullNode.nodes.Add(null);
+            Check(Flagged(DialogueValidator.Validate(nullNode), 1), "空引用节点被报出");
+
+            var spaced = Asset("robin", End("n1 "));
+            Check(Mentions(DialogueValidator.Validate(spaced), "空白"), "ID 首尾空白被报出");
+
+            Section("DialogueValidator 选项");
+
+            var noOptions = Asset("robin", Choice("n1"));
+            Check(Mentions(DialogueValidator.Validate(noOptions), "一个选项都没有"), "Choice 零选项被报出");
+
+            var nullOptions = Asset("robin", Choice("n1"));
+            nullOptions.nodes[0].options = null;
+            Check(Mentions(DialogueValidator.Validate(nullOptions), "null"), "options 为 null 被单独报出");
+
+            var tooMany = Asset("robin", Choice("n1",
+                Opt("a", "e"), Opt("b", "e"), Opt("c", "e"), Opt("d", "e")), End("e"));
+            Check(Mentions(DialogueValidator.Validate(tooMany), "上限"), "选项数超上限被报出");
+
+            var optProblems = Asset("robin", Choice("n1", Opt("", "e"), Opt("好的", null), Opt("去吧", "gone")), End("e"));
+            var optIssues = DialogueValidator.Validate(optProblems);
+            Check(Mentions(optIssues, "没有文案"), "选项空文案被报出");
+            Check(Mentions(optIssues, "没有跳转目标"), "选项空跳转 → 警告");
+            Check(Mentions(optIssues, "目标不存在"), "选项断链被报出");
+
+            var choiceWithNext = Asset("robin", Choice("n1", Opt("a", "e")), End("e"));
+            choiceWithNext.nodes[0].nextId = "e";
+            Check(Mentions(DialogueValidator.Validate(choiceWithNext), "不会生效"), "Choice 上的 nextId 被警告");
+
+            Section("DialogueValidator 消息与时间");
+
+            var nullMessage = Asset("robin", new DialogueNode { id = "n1", kind = NodeKind.Message, nextId = "n2" }, End("n2"));
+            Check(Mentions(DialogueValidator.Validate(nullMessage), "message 是空的"), "message 为 null 被报出");
+
+            var sticker = Asset("robin", new DialogueNode
+            {
+                id = "n1",
+                kind = NodeKind.Message,
+                nextId = "n2",
+                message = new MessageData { kind = MessageKind.Sticker, text = "", assetName = "" },
+            }, End("n2"));
+            Check(Mentions(DialogueValidator.Validate(sticker), "assetName"), "表情包缺资源名被报出");
+
+            var labelOnly = Asset("robin", Msg("n1", "A", next: "n2", timeLabel: "昨天 21:30"), End("n2"));
+            Check(Mentions(DialogueValidator.Validate(labelOnly), "没有时间数值"), "有文案无数值 → 警告");
+
+            var valueOnly = Asset("robin", Msg("n1", "A", next: "n2", timeValue: 1000), End("n2"));
+            Check(Mentions(DialogueValidator.Validate(valueOnly), "没有文案"), "有数值无文案 → 警告");
+
+            var backwards = Asset("robin",
+                Msg("n1", "A", next: "n2", timeLabel: "今天 09:00", timeValue: 5000),
+                new DialogueNode { id = "n2", kind = NodeKind.End, timeLabel = "昨天 21:30", timeValueUtc = 1000 });
+            Check(Mentions(DialogueValidator.Validate(backwards), "更早"), "时间倒退 → 警告");
+
+            Section("DialogueValidator 图结构");
+
+            var unreachable = Asset("robin", Msg("n1", "A", next: "n2"), End("n2"), End("orphan"));
+            var unIssues = DialogueValidator.Validate(unreachable);
+            Eq(0, Errors(unIssues), "不可达不是错误");
+            Check(Flagged(unIssues, 2), "不可达节点被警告");
+
+            // 零延迟环：唯一一类能把 Unity 直接搞崩的配置错误。
+            // DialogueRunner.MaxHistorySteps 只在 _loadingHistory 时生效，选择之后的推进没有保护
+            var cycle = Asset("robin", Msg("n1", "A", next: "n2"), Msg("n2", "B", next: "n1"));
+            var cIssues = DialogueValidator.Validate(cycle);
+            Eq(1, Errors(cIssues), "零延迟环 → 1 个错误");
+            Check(Mentions(cIssues, "崩"), "零延迟环的说明点出会崩栈");
+
+            // 环上有一个正延迟 → 递归会在那里断开，是"走不完"而不是崩栈
+            var slowCycle = Asset("robin", Msg("n1", "A", next: "n2", delay: 1f), Msg("n2", "B", next: "n1"));
+            Check(!Mentions(DialogueValidator.Validate(slowCycle), "崩"), "有延迟的环不报崩栈");
+
+            // 绕回前面某个选项重新问一遍是正常设计，环跨过 Choice 就不该报
+            var choiceLoop = Asset("robin",
+                Choice("n1", Opt("再问一次", "n2")),
+                Msg("n2", "好的", next: "n1"));
+            Eq(0, Errors(DialogueValidator.Validate(choiceLoop)), "跨过 Choice 的环不误报");
+
+            Section("DialogueValidator 引用索引");
+
+            var inbound = Asset("robin", Msg("n1", "A", next: "n2"), End("n2"));
+            var index = DialogueValidator.BuildInboundIndex(inbound);
+            Eq(1, index.CountTo("n2"), "n2 有 1 条入边");
+            Eq(0, index.CountTo("n1"), "入口没有入边");
+            Check(index.RefsTo("n2")[0].IsDirect, "入边来自节点自身的 nextId");
+        }
+
+        private static void nodeIdUtility()
+        {
+            Section("NodeIdUtility");
+
+            var asset = Asset("robin", Msg("s1", "A", next: "s2"), End("s2"));
+            Eq("s3", NodeIdUtility.GenerateId(asset), "生成最小的空闲 ID");
+
+            // 编辑器走的是这条重载：新增节点时数组刚被 SerializedProperty 改过，
+            // 托管侧的 asset.nodes 还是旧快照，只能从属性视图那侧读"已占用的 ID"
+            Eq("s2", NodeIdUtility.GenerateId(new[] { "s1", "s3" }), "从纯字符串表生成最小空闲 ID");
+            Eq("s1", NodeIdUtility.GenerateId(new string[0]), "空表 → s1");
+            Eq("s1", NodeIdUtility.GenerateId((IEnumerable<string>)null), "null → s1，不抛异常");
+            Eq("s2", NodeIdUtility.GenerateId(new[] { "s1", null, "", "s1" }), "跳过空值，重复项不影响结果");
+
+            var ids = new List<string>(NodeIdUtility.IdsOf(asset));
+            Eq(2, ids.Count, "IdsOf 只枚举非空 ID");
+            Eq("s1", ids[0], "IdsOf 保持列表顺序");
+
+            // 三处引用：入口本身 + 两个节点的 nextId。改名必须一次性全部跟上，
+            // 留一个中间态就可能存出一份断得毫无规律的资产
+            var rename = Asset("robin",
+                Choice("s1", Opt("甲", "s2"), Opt("乙", "s3")),
+                Msg("s2", "A", next: "s4"),
+                Msg("s3", "B", next: "s4"),
+                End("s4"));
+            rename.entryNodeId = "s4";
+            Eq(3, NodeIdUtility.RewriteReferences(rename, "s4", "sX"), "改写入口 + 两条 nextId 引用");
+            Eq("sX", rename.entryNodeId, "入口已改写");
+            Eq("sX", rename.nodes[1].nextId, "节点 nextId 已改写");
+            Eq(0, NodeIdUtility.RewriteReferences(rename, "s4", "sY"), "旧 ID 已不存在 → 0 处改写");
+
+            var optRename = Asset("robin", Choice("s1", Opt("甲", "s2")), End("s2"));
+            Eq(1, NodeIdUtility.RewriteReferences(optRename, "s2", "sY"), "改写选项引用");
+            Eq("sY", optRename.nodes[0].options[0].nextId, "选项 nextId 已改写");
+
+            var clear = Asset("robin", Msg("n1", "A", next: "n2"), End("n2"));
+            Eq(1, NodeIdUtility.ClearReferencesTo(clear, "n2"), "清空指向 n2 的引用");
+            Eq(null, clear.nodes[0].nextId, "引用已置空");
+
+            var remove = Asset("robin", Msg("n1", "A", next: "n2"), End("n2"));
+            Check(NodeIdUtility.RemoveNodeAt(remove, 1), "删除节点成功");
+            Eq(1, remove.nodes.Count, "节点数减一");
+            Check(!NodeIdUtility.RemoveNodeAt(remove, 9), "越界删除被拒绝");
+        }
+
+        // ── MediaLibrary ────────────────────────────────────────────
+
+        /// <summary>
+        /// 只验"没有资源库"和"库是空的"两条路径。
+        /// </summary>
+        /// <remarks>
+        /// 命中条目的那条路径需要往 <c>entries</c> 里塞数据，而它是私有字段 ——
+        /// 用反射去戳会把测试焊死在字段名上，代价大于收益，留给 Unity 侧的
+        /// 编辑器下拉框（它本来就靠这个字段名工作）去覆盖。
+        /// <para>
+        /// 但这两条"空"路径恰好是最要紧的：它们对应"忘了跑构建表情资源库"，
+        /// 症状是所有表情在游戏里变成纯色方块 —— 不报错、不崩溃，只是不对。
+        /// 所以至少要钉死"取不到就是 null，且不抛异常"。
+        /// </para>
+        /// </remarks>
+        private static void mediaLibrary()
+        {
+            Section("MediaLibrary");
+
+            var empty = new MediaLibrary();
+
+            Eq(null, empty.Find(null), "null 资源名 → null，不抛异常");
+            Eq(null, empty.Find(""), "空资源名 → null");
+            Eq(null, empty.Find("中秋快乐"), "空库里查名字 → null");
+
+            MediaLibrary.SetCurrentForTests(empty);
+            Eq(null, MediaLibrary.Resolve("嘿嘿"), "有库但库里没有 → null");
+
+            MediaLibrary.SetCurrentForTests(null);
+            Eq(null, MediaLibrary.Resolve("嘿嘿"), "没有库 → null，不抛异常");
+
+            // 取不到时不能把"没找到"缓存下来，否则后来补建了资源库，
+            // 不重启编辑器就永远还是取不到
+            Eq(null, MediaLibrary.Current, "桩环境下 Resources.Load 取不到 → Current 为 null");
+            Eq(null, MediaLibrary.Current, "再取一次仍是 null（没有把失败缓存成非空）");
         }
     }
 }

@@ -85,6 +85,15 @@ namespace ChatSystem.Runtime
         public bool IsTyping => _typing;
 
         /// <summary>
+        /// 本次推进是否处于"载入历史"模式，见 <see cref="StartLoadingHistory"/>。
+        /// </summary>
+        /// <remarks>
+        /// 订阅者需要它来区分"补发历史"与"收到新消息"—— 两者在
+        /// <see cref="OnMessageEmitted"/> 上长得一模一样，但对调用方的含义完全相反。
+        /// </remarks>
+        public bool IsLoadingHistory => _loadingHistory;
+
+        /// <summary>
         /// 上一条<b>配置了时间</b>的消息的时间值；<c>0</c> 表示本会话尚无带时间的消息。
         /// </summary>
         /// <remarks>需随存档持久化，否则重进游戏后首条新消息会误判为会话首条而多插一条分割线。</remarks>
@@ -260,7 +269,7 @@ namespace ChatSystem.Runtime
             {
                 Debug.LogError(
                     $"[ChatSystem] 载入历史时连续推进超过 {MaxHistorySteps} 个节点，疑似节点成环。" +
-                    $"已中断载入。请用 ChatSystem/DialogueValidator 检查资产。",
+                    $"已中断载入。请用 Tools/ChatSystem/校验全部对话资产 检查。",
                     _asset);
                 End();
                 return;
@@ -271,7 +280,7 @@ namespace ChatSystem.Runtime
             {
                 Debug.LogError(
                     $"[ChatSystem] 节点 \"{id}\" 不存在（由 \"{_currentNodeId}\" 跳转而来）。对话中断。" +
-                    $"请用 ChatSystem/DialogueValidator 检查断链。",
+                    $"请用 Tools/ChatSystem/校验全部对话资产 检查断链。",
                     _asset);
                 End();
                 return;

@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 5862767709365646046}
   - component: {fileID: 3098229998024089653}
   - component: {fileID: 1487927234580096487}
+  - component: {fileID: 4178476942060160300}
   m_Layer: 5
   m_Name: Reddot
   m_TagString: Untagged
@@ -192,14 +193,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.42, b: 0.42, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 6b58075dd19e394a36659fdc9b447984, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -209,6 +210,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4178476942060160300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5806538781878042782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b2e94c1af6d4e9c8a3f5d0e16b7c284, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7108336916610116255
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,6 +595,7 @@ MonoBehaviour:
   nameText: {fileID: 1919313211428556571}
   previewText: {fileID: 3790033537043554395}
   reddot: {fileID: 5806538781878042782}
+  reddotPulse: {fileID: 4178476942060160300}
   button: {fileID: 6496830195952715830}
   normalColor: {r: 0.831, g: 0.831, b: 0.831, a: 1}
   selectedColor: {r: 0.722, g: 0.722, b: 0.741, a: 1}

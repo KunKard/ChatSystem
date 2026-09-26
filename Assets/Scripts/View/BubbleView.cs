@@ -104,9 +104,12 @@ namespace ChatSystem.View
 
             if (isMedia)
             {
-                // 美术资源待补（Day 4）。贴图为 null 时 Unity 会画一个纯色四边形，
+                // 资源名 → 图。取不到时留 null，Unity 会画一个纯色四边形，
                 // 正好当作缺图占位 —— 位置和尺寸能看出对错，比整块隐形强。
-                if (stickerImage != null) stickerImage.sprite = null;
+                if (stickerImage != null)
+                {
+                    stickerImage.sprite = MediaLibrary.Resolve(message.assetName);
+                }
             }
             else if (bodyText != null)
             {

@@ -19,6 +19,13 @@
     <!-- 直接编译工程里的真实源码，而不是拷贝一份，避免验的东西和跑的东西不一致 -->
     <Compile Include="../Assets/Scripts/Data/**/*.cs" />
     <Compile Include="../Assets/Scripts/Runtime/**/*.cs" />
+    <!-- 策划工具里"只算不报"的那一半。逐个列出而不是用 Assets/Scripts/Editor/**/*.cs：
+         同目录下的 DialogueEditor.cs / DialoguePreviewState.cs 必然 using UnityEditor，
+         通配会把它们一起拖进来直接编译失败。这份清单同时也是"哪些文件必须保持
+         编辑器无关"的机器可读记录 —— 谁把 AssetDatabase 写进校验器，这里立刻红给他看 -->
+    <Compile Include="../Assets/Scripts/Editor/ValidationIssue.cs" />
+    <Compile Include="../Assets/Scripts/Editor/DialogueValidator.cs" />
+    <Compile Include="../Assets/Scripts/Editor/NodeIdUtility.cs" />
   </ItemGroup>
 
 </Project>

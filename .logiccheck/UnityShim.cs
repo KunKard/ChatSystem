@@ -24,6 +24,20 @@ namespace UnityEngine
         public static void LogError(object message, Object context = null) => Console.WriteLine("    [ERROR] " + message);
     }
 
+    public static class Mathf
+    {
+        public static float Clamp(float value, float min, float max)
+            => value < min ? min : (value > max ? max : value);
+
+        public static int Clamp(int value, int min, int max)
+            => value < min ? min : (value > max ? max : value);
+
+        public static float Max(float a, float b) => a > b ? a : b;
+        public static float Min(float a, float b) => a < b ? a : b;
+        public static int Max(int a, int b) => a > b ? a : b;
+        public static int Min(int a, int b) => a < b ? a : b;
+    }
+
     [AttributeUsage(AttributeTargets.Class)]
     public class CreateAssetMenuAttribute : Attribute
     {
@@ -36,5 +50,22 @@ namespace UnityEngine
     public class TooltipAttribute : Attribute
     {
         public TooltipAttribute(string tooltip) { }
+    }
+
+    [AttributeUsage(AttributeTargets.Field)]
+    public class SerializeFieldAttribute : Attribute
+    {
+    }
+
+    /// <summary>
+    /// 桩里没有资源库，一律返回 null。
+    /// </summary>
+    /// <remarks>
+    /// 这不是"为了让编译过去而糊弄一下" —— 返回 null 正是"工程里还没配资源库"
+    /// 时的真实语义，所以调用方的判空分支反倒成了被验到的那一条。
+    /// </remarks>
+    public static class Resources
+    {
+        public static T Load<T>(string path) where T : Object => null;
     }
 }

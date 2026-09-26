@@ -775,6 +775,23 @@ namespace ChatSystem.Tests
         }
 
         [Test]
+        public void 会话_载入历史不计未读()
+        {
+            var asset = MakeAsset("robin",
+                Msg("n1", "A", next: "n2"),
+                Msg("n2", "B", next: "n3"),
+                End("n3"));
+
+            // 冷启动的真实顺序：全部会话都还没被激活，就先把各自的历史补出来
+            var session = new ChatSession(asset) { IsActive = false };
+            session.Runner.StartLoadingHistory("n1");
+
+            Assert.AreEqual(2, session.Messages.Count, "历史照常进消息列表");
+            Assert.AreEqual(0, session.UnreadCount,
+                "补发历史不是\"收到新消息\"。计成未读会让冷启动时每个联系人都顶着一个红点");
+        }
+
+        [Test]
         public void 会话预览_无消息时回落到默认预览()
         {
             var asset = MakeAsset("robin", End("n1"));

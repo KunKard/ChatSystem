@@ -1437,7 +1437,7 @@ MonoBehaviour:
   headerName: {fileID: 1600075811}
   headerSignature: {fileID: 1348686287}
   playerProfile: {fileID: 11400000, guid: 303c6f6f3929496091c7b1a5235b3f3f, type: 2}
-  playerDisplayName: "\u6211"
+  playerDisplayName: Kard
   npcBubblePrefab: {fileID: 3477999912343032698, guid: 56305f5bc864741459a02261ed61388d, type: 3}
   playerBubblePrefab: {fileID: 6262094839730453431, guid: bb478da954edf1f47b477340ee93872f, type: 3}
   dividerPrefab: {fileID: 5474450799693425347, guid: 77439fac1697dee40a00b73736470c40, type: 3}
@@ -1856,7 +1856,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -791.4795, w: 0}
+  m_margin: {x: 0, y: 0, z: -956.06665, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2123,12 +2123,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conversations:
   - {fileID: 11400000, guid: 37f1b3c060b10dd40a58f4d27f170f28, type: 2}
+  - {fileID: 11400000, guid: 18f0192eac7930f408f6e38ae156d32a, type: 2}
   - {fileID: 11400000, guid: 2e2038dd1329db142b52d99c59e21b18, type: 2}
   - {fileID: 11400000, guid: 5ca3c76db31c3044aaf0064c5ce679c4, type: 2}
   - {fileID: 11400000, guid: cebe2ccef3f4f634f89096baf61cfeaa, type: 2}
   - {fileID: 11400000, guid: fd31cdf661ecc0448aad11f0d78ef940, type: 2}
   - {fileID: 11400000, guid: e8eba725910ac2642b92cd029d1ad3fa, type: 2}
-  initialContactId: robin
+  - {fileID: 11400000, guid: 5be7481aff4b766429a2044e6879d6b6, type: 2}
+  initialContactId: Ayang
   contactList: {fileID: 2068047766}
   chatWindow: {fileID: 1019553228}
   replyOptions: {fileID: 524407038}

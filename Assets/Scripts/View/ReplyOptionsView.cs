@@ -24,8 +24,14 @@ namespace ChatSystem.View
     /// </remarks>
     public class ReplyOptionsView : MonoBehaviour
     {
-        /// <summary>选项数量上限。设计文档 §5.3 规定为 1~3 个。</summary>
-        public const int MaxOptions = 3;
+        /// <summary>
+        /// 选项数量上限。设计文档 §5.3 规定为 1~3 个。
+        /// </summary>
+        /// <remarks>
+        /// 值本身定义在 <see cref="ConversationLimits.MaxOptions"/> —— 编辑器校验器也要引用它，
+        /// 而校验器只引用得到 <c>Data</c>。这里保留同名的别名，是为了不打断既有调用方。
+        /// </remarks>
+        public const int MaxOptions = ConversationLimits.MaxOptions;
 
         private readonly List<Button> _buttons = new List<Button>();
         private readonly List<TMP_Text> _labels = new List<TMP_Text>();

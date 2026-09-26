@@ -27,7 +27,7 @@ namespace ChatSystem.View
         [SerializeField] private List<ConversationAsset> conversations = new List<ConversationAsset>();
 
         [Tooltip("留空则默认打开第一个。")]
-        [SerializeField] private string initialContactId = "robin";
+        [SerializeField] private string initialContactId = "Ayang";
 
         [Header("视图")]
         [SerializeField] private ContactListView contactList;

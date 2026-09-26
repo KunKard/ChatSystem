@@ -1,0 +1,19 @@
+{
+    "name": "ChatSystem.Editor",
+    "rootNamespace": "ChatSystem.EditorTools",
+    "references": [
+        "ChatSystem.Data",
+        "ChatSystem.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

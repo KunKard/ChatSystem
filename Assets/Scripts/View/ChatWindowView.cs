@@ -31,7 +31,7 @@ namespace ChatSystem.View
         [SerializeField] private ContactProfile playerProfile;
 
         [Tooltip("没有配置 playerProfile 时，玩家气泡显示的名字。")]
-        [SerializeField] private string playerDisplayName = "我";
+        [SerializeField] private string playerDisplayName = "Kard";
 
         [Header("预制体")]
         [SerializeField] private BubbleView npcBubblePrefab;

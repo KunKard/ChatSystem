@@ -157,11 +157,19 @@ namespace ChatSystem.EditorTools
                 button.targetGraphic = root.GetComponent<Image>();
 
                 var item = EnsureComponent<ContactItemView>(root);
-                item.ResolveReferences();
 
-                // 红点默认隐藏：未读数由运行时决定，静态摆着会让冷启动就出现一个假红点
+                // ReddotPulse 必须早于 ContactItemView.ResolveReferences ——
+                // 后者靠 GetComponent 在红点节点上找它，挂晚了引用就烘不进预制体
                 var reddot = ViewHierarchy.FindDeep(root.transform, ViewHierarchy.Reddot);
-                if (reddot != null) reddot.gameObject.SetActive(false);
+                if (reddot != null)
+                {
+                    EnsureComponent<ReddotPulse>(reddot.gameObject);
+
+                    // 红点默认隐藏：未读数由运行时决定，静态摆着会让冷启动就出现一个假红点
+                    reddot.gameObject.SetActive(false);
+                }
+
+                item.ResolveReferences();
             }))
             {
                 Debug.LogError($"[SceneWirer] 预制体不存在：{path}");

@@ -23,6 +23,7 @@ namespace ChatSystem.View
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text previewText;
         [SerializeField] private GameObject reddot;
+        [SerializeField] private ReddotPulse reddotPulse;
         [SerializeField] private Button button;
 
         [Header("配色（占位值，待正式视觉稿）")]
@@ -34,6 +35,16 @@ namespace ChatSystem.View
 
         private ChatSession _session;
         private Action<ChatSession> _onPick;
+
+        /// <summary>
+        /// 上一次刷新后红点的显隐状态。
+        /// </summary>
+        /// <remarks>
+        /// 存在的唯一理由是分辨"红点本来就在"和"红点刚出现"—— 只有后者该播动画。
+        /// 少了它就只能靠 <c>UnreadCount &gt; 0</c> 判断，那样每来一条消息都会重播一次，
+        /// 连收三条就是连闪三下。
+        /// </remarks>
+        private bool _reddotShown;
 
         /// <summary>本项对应的会话。列表靠它做身份比对。</summary>
         public ChatSession Session => _session;
@@ -50,7 +61,11 @@ namespace ChatSystem.View
             if (previewText == null) previewText = ViewHierarchy.FindDeep<TMP_Text>(root, ViewHierarchy.LastMessage);
 
             var dot = ViewHierarchy.FindDeep(root, ViewHierarchy.Reddot);
-            if (reddot == null && dot != null) reddot = dot.gameObject;
+            if (dot != null)
+            {
+                if (reddot == null) reddot = dot.gameObject;
+                if (reddotPulse == null) reddotPulse = dot.GetComponent<ReddotPulse>();
+            }
 
             // 预览必须单行截断（§5.1）：长文案不能换行撑高列表项，也不能画到箭头外面。
             // 在代码里设而不是只在预制体上设，是为了让"预制体被改坏"不至于变成静默的视觉错误。
@@ -96,7 +111,10 @@ namespace ChatSystem.View
             }
 
             SetSelected(selected);
-            RefreshPreview();
+
+            // 绑定是"这一项换了个联系人"，不是"来了条新消息"：红点按当前状态直接落位，不播动画。
+            // 列表池化之后 Bind 会被频繁调用，在这里播动画会变成满屏红点齐闪
+            RefreshPreviewCore(animateReddot: false);
         }
 
         /// <summary>只更新选中态，不重新绑定。</summary>
@@ -108,9 +126,38 @@ namespace ChatSystem.View
         /// <summary>只刷新预览文案与红点。消息到达、输入状态变化时走这条，代价远低于整项重绑。</summary>
         public void RefreshPreview()
         {
-            if (previewText != null) previewText.SetText(_session != null ? _session.PreviewText : string.Empty);
+            RefreshPreviewCore(animateReddot: true);
+        }
 
-            if (reddot != null) reddot.SetActive(_session != null && _session.UnreadCount > 0);
+        private void RefreshPreviewCore(bool animateReddot)
+        {
+            if (previewText != null) previewText.SetText(_session != null ? _session.PreviewText : string.Empty);
+            ApplyReddot(animateReddot);
+        }
+
+        /// <summary>红点的显隐，以及"刚出现时弹一次"。</summary>
+        /// <param name="animate">是否允许播动画；绑定新会话时传 <c>false</c>。</param>
+        /// <remarks>
+        /// <b>只在"不显示 → 显示"这一种转移上播。</b>红点本来就在、又来一条消息时不重播 ——
+        /// 那会把动画变成连续闪烁，而红点要传达的恰恰是"这里有未读"这个稳定状态。
+        /// </remarks>
+        private void ApplyReddot(bool animate)
+        {
+            bool shouldShow = _session != null && _session.UnreadCount > 0;
+            if (shouldShow == _reddotShown) return;
+
+            _reddotShown = shouldShow;
+
+            if (reddot == null) return;
+            reddot.SetActive(shouldShow);
+
+            if (!shouldShow) return;
+
+            // 没接线时红点照样能正常显隐，只是少了弹出动画。不值得为它报错中断
+            if (reddotPulse == null) return;
+
+            if (animate) reddotPulse.Play();
+            else reddotPulse.SnapToFull();
         }
 
         private void HandleClick()

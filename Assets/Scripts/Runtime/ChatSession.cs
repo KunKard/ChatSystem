@@ -125,7 +125,11 @@ namespace ChatSystem.Runtime
             if (message == null) return;
 
             Messages.Add(message);
-            if (!IsActive) UnreadCount++;
+
+            // 载入历史期间收到的不是"新消息"，是"本来就有的消息"：那些对话在玩家打开
+            // 这个会话之前就已经发生过了。把它们计成未读的后果不是少一个红点，
+            // 而是冷启动时每个联系人都顶着一个红点，且未读数等于它的整段历史长度
+            if (!IsActive && !Runner.IsLoadingHistory) UnreadCount++;
         }
 
         private void HandleTypingChanged(string contactId, bool typing)
